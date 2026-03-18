@@ -1,9 +1,11 @@
 import Image from "next/image";
+import HeroBanner from "./components/HeroBanner";
 
-export default function Home() {
+
+export default function HomePage() {
   return (
-    <div className="">
-      CHINOSS COFFEESPACE
-    </div>
+    <main className="">
+      <HeroBanner />
+    </main>
   );
 }

@@ -9,6 +9,13 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-montserrat: var(--font-montserrat);
+
+  --color-red: #B21600;
+  --color-red-deep: #B4061B;
+  --color-red-light: #DB0A23;
+  --color-cream: #F5F0EB;
+  --color-cream-dark: #EAE6E2;
+  --color-cream-deep: #D4B896;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,3 +30,4 @@ body {
   color: var(--foreground);
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
+
