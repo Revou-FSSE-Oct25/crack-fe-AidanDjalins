@@ -1,11 +1,13 @@
 import Image from "next/image";
 import HeroBanner from "./components/HeroBanner";
+import Explore from "./components/Explore";
 
 
 export default function HomePage() {
   return (
-    <main className="">
+    <div className="h-full overflow-x-hidden">
       <HeroBanner />
-    </main>
+      <Explore />
+    </div>
   );
 }

@@ -14,7 +14,7 @@ export default function HeroBanner() {
 
         {/* Logo */}
         <Image
-          src="/logo.jpg"
+          src="/images/logo.jpg"
           width={150}
           height={150}
           alt="Chinoss CoffeeSpace"
