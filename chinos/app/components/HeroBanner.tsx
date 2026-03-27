@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HeroBanner() {
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
@@ -11,10 +13,12 @@ export default function HeroBanner() {
         </p>
 
         {/* Logo */}
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ81tkHDPPmy4xZOCOIEqU7ArQHjZZjmPYqiw&s"
+        <Image
+          src="/logo.jpg"
+          width={150}
+          height={150}
           alt="Chinoss CoffeeSpace"
-          className="w-[200px] h-[200px] rounded-full object-cover border border-[rgba(245,236,215,0.3)] transition-all duration-300 hover:scale-[1.02]"
+          className="rounded-full object-cover border border-[rgba(245,236,215,0.3)] transition-all duration-300 hover:scale-[1.02]"
         />
 
         {/* Subtext */}
