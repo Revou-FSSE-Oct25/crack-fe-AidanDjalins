@@ -19,7 +19,7 @@ export default function Explore() {
                                     />
                                 </div>
                                 <h3 className="text-3xl xl:text-4xl font-bold">Mellow Espresso</h3>
-                                <p className="max-w-[400px]">Have a cup of our espresso blends! We guarantee it will mellow out the day</p>
+                                <p className="max-w-[400px] mt-2">Have a cup of our espresso blends! We guarantee it will mellow out the day</p>
                             </div>
                         </div>
                         <div className="relative flex items-start">
@@ -34,7 +34,7 @@ export default function Explore() {
                                     />
                                 </div>
                                 <h3 className="text-3xl xl:text-4xl font-bold">Brewed Bar</h3>
-                                <p className="max-w-[400px]">A brew or two will help ease in to the day, as flavors pop in your mouth</p>
+                                <p className="max-w-[400px] mt-2">A brew or two will help ease in to the day, as flavors pop in your mouth</p>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export default function Explore() {
                                     />
                                 </div>
                                 <h3 className="text-3xl xl:text-4xl font-bold">Ice Delights</h3>
-                                <p className="max-w-[400px]">A scorching hot day calls for a cooling refreshment, surely to sooth the soul</p>
+                                <p className="max-w-[400px] mt-2">A scorching hot day calls for a cooling refreshment, surely to sooth the soul</p>
                             </div>
                         </div>
                         <div className="relative flex items-start">
@@ -80,7 +80,7 @@ export default function Explore() {
                                     />
                                 </div>
                                 <h3 className="text-3xl xl:text-4xl font-bold">Menu Food</h3>
-                                <p className="max-w-[400px]">Is that stomach rumbling, I hear? Our bites will satiate your appetite</p>
+                                <p className="max-w-[400px] mt-2">Is that stomach rumbling, I hear? Our bites will satiate your appetite</p>
                             </div>
                         </div>
                     </div>
