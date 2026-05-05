@@ -2,6 +2,7 @@ import Image from "next/image";
 import HeroBanner from "./components/HeroBanner";
 import Explore from "./components/Explore";
 import About from "./components/About";
+import Locations from "./components/Locations";
 
 
 export default function HomePage() {
@@ -10,6 +11,7 @@ export default function HomePage() {
       <HeroBanner />
       <Explore />
       <About />
+      <Locations />
     </div>
   );
 }
