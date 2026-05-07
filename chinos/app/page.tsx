@@ -6,6 +6,7 @@ import HeroBanner from "./components/HeroBanner";
 import Explore from "./components/Explore";
 import About from "./components/About";
 import Locations from "./components/Locations";
+import Contact from "./components/Contact";
 
 
 export default function HomePage() {
@@ -24,6 +25,7 @@ export default function HomePage() {
       <Explore />
       <About />
       <Locations />
+      <Contact />
     </div>
   );
 }
