@@ -1,9 +1,11 @@
 "use client"
 
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
+import { useSearchParams } from "next/navigation"
+import { useEffect } from "react"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,17 +19,39 @@ import {
 } from "@/components/ui/select"
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  phoneNumber: z.string(),
-  email: z.string(),
-  inquiryType: z.string(),
-  message: z.string()
+  name: z.string().min(1, "Name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Please enter a valid email"),
+  inquiryType: z.string().min(1, "Please select an inquiry type"),
+  message: z.string().min(1, "Message is required"),
+  eventDate: z.string().optional(),
 });
 
 export default function ContactPage() {
+  const searchParams = useSearchParams();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-  })
+    defaultValues: {
+      name: "",
+      phoneNumber: "",
+      email: "",
+      inquiryType: "",
+      message: "",
+      eventDate: "",
+    }
+  });
+
+  // Pre-fill inquiry type from query param (?type=event)
+  useEffect(() => {
+    const type = searchParams.get("type");
+    if (type === "event") {
+      form.setValue("inquiryType", "Event Inquiry");
+    }
+  }, [searchParams, form]);
+
+  const inquiryType = form.watch("inquiryType");
+  const isEventInquiry = inquiryType === "Event Inquiry";
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -82,7 +106,9 @@ export default function ContactPage() {
                   {...form.register("name")}
                 />
                 {form.formState.errors.name && (
-                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">{form.formState.errors.name.message}</p>
+                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">
+                    {form.formState.errors.name.message}
+                  </p>
                 )}
               </div>
 
@@ -97,6 +123,11 @@ export default function ContactPage() {
                   className="border-[var(--color-red-deep)] border-opacity-20 focus:border-[var(--color-red)] rounded-none font-[var(--font-montserrat)]"
                   {...form.register("phoneNumber")}
                 />
+                {form.formState.errors.phoneNumber && (
+                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">
+                    {form.formState.errors.phoneNumber.message}
+                  </p>
+                )}
               </div>
 
               {/* Email */}
@@ -110,6 +141,11 @@ export default function ContactPage() {
                   className="border-[var(--color-red-deep)] border-opacity-20 focus:border-[var(--color-red)] rounded-none font-[var(--font-montserrat)]"
                   {...form.register("email")}
                 />
+                {form.formState.errors.email && (
+                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">
+                    {form.formState.errors.email.message}
+                  </p>
+                )}
               </div>
 
               {/* Inquiry type */}
@@ -117,17 +153,50 @@ export default function ContactPage() {
                 <label className="font-[var(--font-montserrat)] text-[0.8rem] tracking-[0.1em] uppercase text-[var(--color-red-deep)] opacity-80">
                   Inquiry Type
                 </label>
-                <Select {...form.register("inquiryType")}>
-                  <SelectTrigger className="rounded-none font-[var(--font-montserrat)] border-[var(--color-red-deep)] border-opacity-20">
-                    <SelectValue placeholder="Select inquiry type..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Question Inquiry">Question Inquiry</SelectItem>
-                    <SelectItem value="Complaint Inquiry">Complaint Inquiry</SelectItem>
-                    <SelectItem value="Event Inquiry">Event Inquiry</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  control={form.control}
+                  name="inquiryType"
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="rounded-none font-[var(--font-montserrat)] border-[var(--color-red-deep)] border-opacity-20">
+                        <SelectValue placeholder="Select inquiry type..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="General Inquiry">General Inquiry</SelectItem>
+                        <SelectItem value="Complaint Inquiry">Complaint Inquiry</SelectItem>
+                        <SelectItem value="Event Inquiry">Event Inquiry</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {form.formState.errors.inquiryType && (
+                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">
+                    {form.formState.errors.inquiryType.message}
+                  </p>
+                )}
               </div>
+
+              {/* Event-only fields (when Event Inquiry is selected) */}
+              {isEventInquiry && (
+                <div className="flex flex-col gap-7 border-l-2 border-[var(--color-red)] pl-6 border-opacity-30">
+                  <p className="font-[var(--font-montserrat)] text-[0.72rem] tracking-[0.15em] uppercase text-[var(--color-red)] opacity-60">
+                    Event Details
+                  </p>
+
+                  {/* Preferred date */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-[var(--font-montserrat)] text-[0.8rem] tracking-[0.1em] uppercase text-[var(--color-red-deep)] opacity-80">
+                      Preferred Date
+                    </label>
+                    <Input
+                      id="eventDate"
+                      type="date"
+                      className="border-[var(--color-red-deep)] border-opacity-20 focus:border-[var(--color-red)] rounded-none font-[var(--font-montserrat)]"
+                      {...form.register("eventDate")}
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Message */}
               <div className="flex flex-col gap-1.5">
@@ -140,12 +209,17 @@ export default function ContactPage() {
                   className="border-[var(--color-red-deep)] border-opacity-20 focus:border-[var(--color-red)] rounded-none font-[var(--font-montserrat)] min-h-[140px]"
                   {...form.register("message")}
                 />
+                {form.formState.errors.message && (
+                  <p className="font-[var(--font-montserrat)] text-[0.75rem] text-[var(--color-red)]">
+                    {form.formState.errors.message.message}
+                  </p>
+                )}
               </div>
 
               {/* Submit */}
               <Button
                 type="submit"
-                className="mt-2 font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-[var(--color-red)] text-[var(--color-cream)] border border-[var(--color-red)] cursor-pointer transition-all duration-300 hover:bg-transparent hover:text-[var(--color-red)] hover:-translate-y-0.5 w-full"
+                className="mt-2 font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-[var(--color-red)] text-[var(--color-cream)] border border-[var(--color-red)] cursor-pointer transition-all duration-300 hover:bg-transparent hover:text-[var(--color-red)] hover:-translate-y-0.5 w-full rounded-none h-auto"
               >
                 Send Message
               </Button>
