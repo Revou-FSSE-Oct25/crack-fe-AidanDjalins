@@ -6,6 +6,14 @@ import Link from "next/link";
 const navLeft = ["Menu", "About", "Locations"];
 const navRight = ["Events", "Contact", "Order"];
 const allLinks = [...navLeft, ...navRight];
+const navLinks: Record<string, string> = {
+  Menu: "/menu",
+  About: "/about",
+  Locations: "/locations",
+  Events: "/events",
+  Contact: "/contact",
+  Order: "/order",
+};
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,7 +42,7 @@ export default function Header() {
             {navLeft.map((link) => (
               <a
                 key={link}
-                href="#"
+                href={navLinks[link]}
                 className="font-[var(--font-montserrat)] font-normal text-[0.8rem] tracking-[0.2em] uppercase text-[var(--color-cream)] opacity-85 hover:opacity-100 transition-opacity whitespace-nowrap no-underline"
               >
                 {link}
@@ -54,7 +62,7 @@ export default function Header() {
             {navRight.map((link) => (
               <a
                 key={link}
-                href="#"
+                href={navLinks[link]}
                 className="font-[var(--font-montserrat)] font-normal text-[0.8rem] tracking-[0.2em] uppercase text-[var(--color-cream)] opacity-85 hover:opacity-100 transition-opacity whitespace-nowrap no-underline"
               >
                 {link}
@@ -112,7 +120,7 @@ export default function Header() {
         {allLinks.map((link) => (
           <a
             key={link}
-            href="#"
+            href={navLinks[link]}
             onClick={() => setMenuOpen(false)}
             className="font-[var(--font-montserrat)] text-[1.6rem] font-normal text-[var(--color-cream)] no-underline py-3 border-b border-[rgba(245,236,215,0.1)] opacity-90 hover:opacity-100 hover:pl-2 transition-all duration-200"
           >

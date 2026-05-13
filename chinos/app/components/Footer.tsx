@@ -1,5 +1,12 @@
 import Link from "next/link";
 
+const companyLinks: Record<string, string> = {
+  About: "/about",
+  Locations: "/locations",
+  Events: "/events",
+  Contact: "/contact"
+};
+
 export default function Footer() {
   return (
     <footer className="bg-[var(--color-red)] text-[var(--color-cream)]">
@@ -37,7 +44,7 @@ export default function Footer() {
             {["About", "Locations", "Events", "Contact"].map((link) => (
               <a
                 key={link}
-                href="#"
+                href={companyLinks[link]}
                 className="font-[var(--font-montserrat)] font-normal text-[0.85rem] tracking-[0.1em] text-[var(--color-cream)] opacity-75 hover:opacity-100 transition-opacity no-underline w-fit"
               >
                 {link}
@@ -52,7 +59,7 @@ export default function Footer() {
             Products
           </h4>
           <nav className="flex flex-col gap-3">
-            {["Coffee", "Beans", "Merchandise"].map((link) => (
+            {["Menu"].map((link) => (
               <a
                 key={link}
                 href="#"

@@ -14,11 +14,11 @@ const icon = L.icon({
 });
 
 const locations = [
-  { name: "Chinoss Coffeespace Sukajadi", position: [0.514183198316319, 101.43609466724826] as [number, number] },
-  { name: "Chinoss Second Home", position: [0.514183198316319, 101.43609466724826] as [number, number] },
-  { name: "Chinoss Panam", position: [0.47524296959808543, 101.37503313841236] as [number, number] },
-  { name: "Chinoss Jl Sudirman", position: [0.5357884803313919, 101.4473692870436] as [number, number] },
-  { name: "Chinoss Duri", position: [1.2624089709124604, 101.187629211426] as [number, number] },
+  { name: "Chinoss Coffeespace Sukajadi", position: [0.514183198316319, 101.43609466724826] as [GLfloat, GLfloat] },
+  { name: "Chinoss Second Home", position: [0.514183198316319, 101.43609466724826] as [GLfloat, GLfloat] },
+  { name: "Chinoss Panam", position: [0.47524296959808543, 101.37503313841236] as [GLfloat, GLfloat] },
+  { name: "Chinoss Jl Sudirman", position: [0.5357884803313919, 101.4473692870436] as [GLfloat, GLfloat] },
+  { name: "Chinoss Duri", position: [1.2624089709124604, 101.187629211426] as [GLfloat, GLfloat] },
 ];
 
 export default function Map() {
