@@ -21,7 +21,7 @@ import {
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   phoneNumber: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Please enter a valid email"),
+  email: z.email("Please enter a valid email"),
   inquiryType: z.string().min(1, "Please select an inquiry type"),
   message: z.string().min(1, "Message is required"),
   eventDate: z.string().optional(),

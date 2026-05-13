@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const navLeft = ["Menu", "About", "Locations"];
-const navRight = ["Events", "Contact", "Order"];
+const navRight = ["Events", "Contact"];
 const allLinks = [...navLeft, ...navRight];
 const navLinks: Record<string, string> = {
   Menu: "/menu",
@@ -12,12 +12,25 @@ const navLinks: Record<string, string> = {
   Locations: "/locations",
   Events: "/events",
   Contact: "/contact",
-  Order: "/order",
 };
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // By default set to false for now, to see the design
+
+  // To-do: Replace with real auth state from token;
+  // e.g. const isLoggedIn = !!getCookie("token") or from a global auth store;
+  const isLoggedIn = false;
+
+   const authLink = isLoggedIn
+    ? { label: "Profile", href: "/profile" }
+    : { label: "Login", href: "/login" };
+ 
+  const linkClass =
+    "font-[var(--font-montserrat)] font-normal text-[0.8rem] tracking-[0.2em] uppercase text-[var(--color-cream)] opacity-85 hover:opacity-100 transition-opacity whitespace-nowrap no-underline";
+ 
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -68,6 +81,14 @@ export default function Header() {
                 {link}
               </a>
             ))}
+
+            {/* Login / Profile */}
+            <Link
+              href={authLink.href}
+              className={`${linkClass} `}
+            >
+              {authLink.label}
+            </Link>
           </div>
 
           {/* Burger (mobile only) */}
@@ -127,6 +148,15 @@ export default function Header() {
             {link}
           </a>
         ))}
+
+        {/* Login / Profile in drawer */}
+        <Link
+          href={authLink.href}
+          onClick={() => setMenuOpen(false)}
+          className="font-[var(--font-montserrat)] text-[1.6rem] font-normal text-[var(--color-cream)] no-underline py-3 border-b border-[rgba(245,236,215,0.1)] opacity-90 hover:opacity-100 hover:pl-2 transition-all duration-200"
+        >
+          {authLink.label}
+        </Link>
       </div>
     </>
   );

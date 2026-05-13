@@ -72,7 +72,7 @@ export default function EventsPage() {
           live sessions, and more. Bring your people, we&apos;ll handle the rest.
         </p>
         <Link
-          href="/contact"
+          href="/contact?type=event"
           className="mt-2 font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-[var(--color-cream)] text-[var(--color-red)] border border-[var(--color-cream)] transition-all duration-300 hover:bg-transparent hover:text-[var(--color-cream)] hover:-translate-y-0.5 inline-block"
         >
           Book an Event
