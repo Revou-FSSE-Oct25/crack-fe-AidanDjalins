@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -39,7 +40,7 @@ export default function About() {
 
             {/* CTA button */}
             <button className="mt-2 font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-transparent text-[var(--color-red)] border border-[var(--color-red)] cursor-pointer transition-all duration-300 hover:bg-[var(--color-red)] hover:text-[var(--color-cream)] hover:-translate-y-0.5">
-              Read More
+              <Link href="/about">Read More</Link>
             </button>
 
           </div>

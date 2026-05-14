@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroBanner() {
   return (
@@ -29,10 +30,10 @@ export default function HeroBanner() {
         {/* CTA buttons */}
         <div className="flex sm:flex-col items-center gap-4 mt-2">
           <button className="font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-[var(--color-cream)] text-[var(--color-red-deep)] border-none cursor-pointer font-medium transition-all duration-300 hover:bg-[var(--color-cream-dark)] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-            Explore Menu
+            <Link href="/menu">Explore Menu</Link>
           </button>
           <button className="font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-transparent text-[var(--color-cream)] border border-[rgba(245,236,215,0.4)] cursor-pointer font-normal transition-all duration-300 hover:border-[var(--color-cream)] hover:-translate-y-0.5">
-            Our Story
+            <Link href="/about">Our Story</Link>
           </button>
         </div>
 

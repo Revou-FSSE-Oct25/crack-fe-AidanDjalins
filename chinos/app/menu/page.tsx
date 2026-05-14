@@ -78,7 +78,7 @@ export default function MenuPage() {
               {/* Image */}
               <div className="relative w-full h-52 overflow-hidden bg-[var(--color-cream-dark)]">
                 <Image
-                  src={item.image}
+                  src={item.imageUrl}
                   fill
                   alt={item.name}
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -171,7 +171,7 @@ export default function MenuPage() {
             {/* Image */}
             <div className="relative w-full sm:w-[280px] h-64 sm:h-auto flex-shrink-0 bg-[var(--color-cream-dark)]">
               <Image
-                src={selectedItem.image}
+                src={selectedItem.imageUrl}
                 fill
                 alt={selectedItem.name}
                 className="object-cover"
