@@ -6,6 +6,7 @@ import { z } from "zod"
 import { toast } from "sonner"
 import { useSearchParams } from "next/navigation"
 import { useEffect } from "react"
+import Cookies from "js-cookie"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,10 +19,19 @@ import {
   SelectValue
 } from "@/components/ui/select"
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+
+// Maps display labels to backend enum values
+const inquiryTypeMap: Record<string, string> = {
+  "General Inquiry": "QUESTION",
+  "Complaint Inquiry": "COMPLAINT",
+  "Event Inquiry": "EVENT",
+};
+
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   phoneNumber: z.string().min(1, "Phone number is required"),
-  email: z.email("Please enter a valid email"),
+  email: z.string().email("Please enter a valid email"),
   inquiryType: z.string().min(1, "Please select an inquiry type"),
   message: z.string().min(1, "Message is required"),
   eventDate: z.string().optional(),
@@ -42,7 +52,6 @@ export default function ContactPage() {
     }
   });
 
-  // Pre-fill inquiry type from query param (?type=event)
   useEffect(() => {
     const type = searchParams.get("type");
     if (type === "event") {
@@ -53,17 +62,43 @@ export default function ContactPage() {
   const inquiryType = form.watch("inquiryType");
   const isEventInquiry = inquiryType === "Event Inquiry";
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      const token = Cookies.get("accessToken");
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const body = {
+        name: values.name,
+        email: values.email,
+        phone: values.phoneNumber,
+        type: inquiryTypeMap[values.inquiryType],
+        message: values.message,
+        ...(isEventInquiry && values.eventDate ? { eventDate: values.eventDate } : {}),
+      };
+
+      const res = await fetch(`${BASE_URL}/inquiries`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({ message: "Submission failed" }));
+        throw new Error(error.message ?? "Submission failed");
+      }
+
+      toast.success("Message sent. We'll get back to you soon.");
+      form.reset();
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to submit. Please try again.");
     }
   }
 
@@ -176,14 +211,12 @@ export default function ContactPage() {
                 )}
               </div>
 
-              {/* Event-only fields (when Event Inquiry is selected) */}
+              {/* Event-only fields */}
               {isEventInquiry && (
                 <div className="flex flex-col gap-7 border-l-2 border-[var(--color-red)] pl-6 border-opacity-30">
                   <p className="font-[var(--font-montserrat)] text-[0.72rem] tracking-[0.15em] uppercase text-[var(--color-red)] opacity-60">
                     Event Details
                   </p>
-
-                  {/* Preferred date */}
                   <div className="flex flex-col gap-1.5">
                     <label className="font-[var(--font-montserrat)] text-[0.8rem] tracking-[0.1em] uppercase text-[var(--color-red-deep)] opacity-80">
                       Preferred Date
@@ -219,9 +252,10 @@ export default function ContactPage() {
               {/* Submit */}
               <Button
                 type="submit"
+                disabled={form.formState.isSubmitting}
                 className="mt-2 font-[var(--font-montserrat)] text-[0.75rem] tracking-[0.2em] uppercase px-9 py-[0.9rem] bg-[var(--color-red)] text-[var(--color-cream)] border border-[var(--color-red)] cursor-pointer transition-all duration-300 hover:bg-transparent hover:text-[var(--color-red)] hover:-translate-y-0.5 w-full rounded-none h-auto"
               >
-                Send Message
+                {form.formState.isSubmitting ? "Sending..." : "Send Message"}
               </Button>
 
             </form>
