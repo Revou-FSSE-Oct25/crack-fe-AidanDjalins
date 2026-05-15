@@ -22,13 +22,15 @@ const linkClass =
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isAdmin = user?.role === "ADMIN";
 
   const authLink = isLoggedIn
     ? { label: "Profile", href: "/profile" }
@@ -45,6 +47,7 @@ export default function Header() {
       >
         <div className="max-w-[1400px] mx-auto h-20 flex items-center justify-between gap-8">
 
+          {/* Left links */}
           <div className="hidden md:flex gap-10 flex-1">
             {navLeft.map((link) => (
               <Link key={link} href={navLinks[link]} className={linkClass}>
@@ -53,23 +56,31 @@ export default function Header() {
             ))}
           </div>
 
+          {/* Center wordmark */}
           <div className="flex-shrink-0 flex items-center justify-center md:mx-0 mx-auto">
             <Link href="/" className="font-[var(--font-montserrat)] font-bold text-[1rem] tracking-[0.25em] uppercase text-[var(--color-cream)] no-underline">
               CHINOSS
             </Link>
           </div>
 
+          {/* Right links */}
           <div className="hidden md:flex gap-10 flex-1 justify-end items-center">
             {navRight.map((link) => (
               <Link key={link} href={navLinks[link]} className={linkClass}>
                 {link}
               </Link>
             ))}
+            {isAdmin && (
+              <Link href="/admin" className={linkClass}>
+                Admin
+              </Link>
+            )}
             <Link href={authLink.href} className={linkClass}>
               {authLink.label}
             </Link>
           </div>
 
+          {/* Burger mobile */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
@@ -83,6 +94,7 @@ export default function Header() {
         </div>
       </nav>
 
+      {/* Mobile overlay */}
       <div
         onClick={() => setMenuOpen(false)}
         className={`md:hidden fixed inset-0 bg-black/50 z-[190] transition-opacity duration-300 ${
@@ -90,6 +102,7 @@ export default function Header() {
         }`}
       />
 
+      {/* Mobile drawer */}
       <div
         className={`md:hidden fixed top-0 right-0 bottom-0 w-[280px] bg-[var(--color-red-deep)] z-[200] flex flex-col pt-24 px-10 pb-12 gap-1 transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
           menuOpen ? "translate-x-0" : "translate-x-full"
@@ -112,6 +125,16 @@ export default function Header() {
             {link}
           </Link>
         ))}
+
+        {isAdmin && (
+          <Link
+            href="/admin"
+            onClick={() => setMenuOpen(false)}
+            className="font-[var(--font-montserrat)] text-[1.6rem] font-normal text-[var(--color-cream)] no-underline py-3 border-b border-[rgba(245,236,215,0.1)] opacity-90 hover:opacity-100 hover:pl-2 transition-all duration-200"
+          >
+            Admin
+          </Link>
+        )}
 
         <Link
           href={authLink.href}
